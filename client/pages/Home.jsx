@@ -7,7 +7,13 @@ class Home extends React.Component {
     return (
       <div>
         <h1>Home</h1>
-        <Link to="/about">About</Link>
+        <div>
+          <Link to="/about"> About </Link>
+          |
+          <Link to="/"> Route to another page </Link>
+          |
+          <Link to="/"> Route to another page </Link>
+        </div>
         <h2>featured feeders banner</h2>
         <Search />
       </div>
