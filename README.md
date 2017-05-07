@@ -1,7 +1,7 @@
 # IntGG
-RUNNIN IT DOWN
+RUNNIN' IT DOWN
 
-Jeff's info:
+Jeff:
 
 Summoner name: allenjp
 
@@ -9,7 +9,9 @@ Summoner ID: 60657014
 
 account ID: 222298606
 
-Handsome Zach
+Zach
+
+Summoner name: Handsome Zach
 
 Summoner ID: 43874132
 
