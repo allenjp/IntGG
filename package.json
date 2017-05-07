@@ -1,0 +1,30 @@
+{
+  "name": "intgg",
+  "version": "1.0.0",
+  "description": "runnin' it down",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allenjp/IntGG.git"
+  },
+  "author": "Jeff Allen, Zach Carr, Dylan Sun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allenjp/IntGG/issues"
+  },
+  "homepage": "https://github.com/allenjp/IntGG#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "webpack": "^2.5.1",
+    "webpack-init": "^0.1.2"
+  }
+}
