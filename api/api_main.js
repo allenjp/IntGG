@@ -1,36 +1,40 @@
+var myInit = { method: 'GET',
+               mode: 'cors'
+             }
+
 $(document).ready(function() {
     //var summoner_obj = getSummonerObj('jpallen');
-    kickoff('jpallen');
+    kickoff('SCIENCE HOMEWORK');
 });
 
 function kickoff(summonerName) {
     getSummonerObj(summonerName);
 }
 function getSummonerObj(summonerName) {
-    var api_url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + summonerName + "?api_key=3a0fbaee-bea5-48fe-bcc6-0581cf9407e7";
+    var api_url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + summonerName + "/recent?api_key=3a0fbaee-bea5-48fe-bcc6-0581cf9407e7";
     
-    $.get(api_url, function(data) {
+    fetch(api_url, myInit).then(function(data) {
         var summoner_obj = {
             "summoner_id": data.id,
             "summoner_name": data.name,
             "account_id": data.accountId
         }
-        getMatchIDList(data.accountId)
+        return data.accountId;
     });
 }
 
-function getMatchIDList(accountID) {
-    var api_url = "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/" + accountID + "/recent?api_key=3a0fbaee-bea5-48fe-bcc6-0581cf9407e7"
+function getMatchList(accountID) {
+    var api_url = "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/" + accountID + "/?api_key=3a0fbaee-bea5-48fe-bcc6-0581cf9407e7"
+    
+    // TODO: Apply some form of rate-limiting here
     
     $.get(api_url, function(data) {
-        $.each(data.matches, function(k, v) {
-            getMatch(v.gameId, accountID);
+        
+        var counter = 0;        
+        $.each(data.matches, function(k, match) {
+            setTimeout(getParticipantID(match.gameId, accountID), 1500);
         });
     });
-}
-
-function getMatch(gameID, accountID) {
-    var participantID = getParticipantID(gameID, accountID);
 }
 
 function getParticipantID(gameID, accountID) {
@@ -39,12 +43,15 @@ function getParticipantID(gameID, accountID) {
     var participantID = 0;
     
     $.get(api_url, function (data) {
-        $.each(data.participantIdentities, function(k, player) {
-           if (player.player.currentAccountId == accountID) {
-               participantID = player.participantId;
-           }
-        });
-        getMatchDetails(gameID, participantID);
+        
+        if (data.participantIdentities[0].player.hasOwnProperty('accountId')) {
+            $.each(data.participantIdentities, function(k, player) {
+               if (player.player.currentAccountId == accountID) {
+                   participantID = player.participantId;
+               }
+            });
+            getMatchDetails(gameID, participantID);
+        }
     });
 }
 
