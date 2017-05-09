@@ -1,7 +1,9 @@
 # IntGG
-RUNNIN IT DOWN
+RUNNIN' IT DOWN
 
-Jeff's info:
+## Riot API Info
+
+Jeff:
 
 Summoner name: allenjp
 
@@ -9,7 +11,9 @@ Summoner ID: 60657014
 
 account ID: 222298606
 
-Handsome Zach
+Zach
+
+Summoner name: Handsome Zach
 
 Summoner ID: 43874132
 
@@ -23,3 +27,12 @@ Summoner ID: 57450834
 
 account ID: 218932140
 
+## To start this app...
+
+-cd into root
+
+-run 'npm start' in one terminal
+
+-run 'npm run build' in another terminal
+
+-http://localhost:8080/

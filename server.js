@@ -5,5 +5,5 @@ app.use(express.static('./public'));
 app.use(express.static('./api'));
 
 app.listen(8080, function() {
-  console.log("WERE UP AND RUNNING (IT DOWN MID)");
+  console.log("WE'RE UP AND RUNNING (IT DOWN MID)");
 })
