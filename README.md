@@ -11,7 +11,7 @@ Summoner ID: 60657014
 
 account ID: 222298606
 
-Zach
+Zach:
 
 Summoner name: Handsome Zach
 
@@ -31,8 +31,8 @@ account ID: 218932140
 
 -cd into root
 
--run 'npm start' in one terminal
+-run `npm start` in one terminal
 
--run 'npm run build' in another terminal
+-run `npm run build` in another terminal
 
 -http://localhost:8080/
