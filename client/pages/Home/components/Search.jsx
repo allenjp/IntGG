@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'react-bootstrap'
 
 class Search extends React.Component {
   handleSubmit(input) {
@@ -11,7 +12,7 @@ class Search extends React.Component {
       <div>
         <div>
           <input type="text" placeholder="Enter a summoner name" id="name-input" />
-          <button type="submit" onClick={() => this.handleSubmit(document.getElementById("name-input").value)}>Search</button>
+          <Button type="submit" className="btn btn-success btn-xs" onClick={() => this.handleSubmit(document.getElementById("name-input").value)}>Search</Button>
         </div>
         <div>
           <h2>render player stats here</h2>
