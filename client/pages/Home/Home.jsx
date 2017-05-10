@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import Search from './components/Search'
+import PlayerStats from './components/PlayerStats'
 import Banner from './components/Banner'
 
 
@@ -14,7 +14,7 @@ class Home extends React.Component {
           <Link to="/about"> About </Link>
         </div>
         <Banner />
-        <Search />
+        <PlayerStats />
       </div>
     )
   }
