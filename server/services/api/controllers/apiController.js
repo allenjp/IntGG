@@ -41,12 +41,11 @@ exports.getSummonerInfo = function (req, res) {
                     console.log('batches: ' + batchNum);
                     var matchIDBatchList = [];
                     var matchIDBatch = [];
-
+                    
+                    
                     for (var j = 0; j < matchCount; j++) {
-                        console.log(j);
                         
                         var matchID = matchListData.matches[j].gameId;
-                        console.log('match id: ' + matchID);
                         matchIDBatch.push(matchID);
                         
                         if (matchIDBatch.length > 9) {
@@ -54,32 +53,72 @@ exports.getSummonerInfo = function (req, res) {
                             matchIDBatch = [];
                         }
                     }
-                    for (var i = 0; i < matchIDBatchList.length; i++) {                      
-                        for (var j = 0; j < matchIDBatchList[i].length; j++) {
-                            var matchID = matchIDBatchList[i][j];
+                
+                    var deathObjList = [];
+                
+                    //for (var i = 0; i < matchIDBatchList.length; i++) {
+                        //for (var j = 0; j < matchIDBatchList[i].length; j++) {
+                            //var matchID = matchIDBatchList[i][j];
                             
-                            // get participant id
-                            var participantUrl = "https://na1.api.riotgames.com/lol/match/v3/matches/" + matchID + "?api_key=" + apiKey;
+                            var matchID = matchIDBatchList[0][0];
+
+                            var participantUrl = "https://na1.api.riotgames.com/lol/match/v3/matches/" + matchID + "?api_key=" + apiKey;           
                             
                             fetch(participantUrl)
                                 .then(function(partipant_json) {
                                     return partipant_json.json();
-                                
                                 }).then(function(participant_data) {
-                                    console.log('participant data: ' + participant_data);
-                                    var participantID = 0;
+                                    var participantID = -1;
                                     if (participant_data.participantIdentities[0].player.hasOwnProperty('accountId')) {
                                         
                                         for (var i = 0; i < participant_data.participantIdentities.length; i++) {
+                                            var participantFound = false;
                                             if (participant_data.participantIdentities[i].player.currentAccountId == accountID) {
-                                                participantID = participant_data.participantIdentities[i].player.participantId;
-                                                console.log('participant id: ' + participantID);
+                                                participantID = participant_data.participantIdentities[i].participantId;
+                                                
+                                                participantFound = true;
+                                            }
+                                            if (participantFound) {
+                                                break;
                                             }
                                         }
+                                        console.log('participant id: ' + participantID);
+
+                                        var timeLineUrl = "https://na1.api.riotgames.com/lol/match/v3/timelines/by-match/" + matchID + "?api_key=3a0fbaee-bea5-48fe-bcc6-0581cf9407e7";
+                                        
+                                        fetch(timeLineUrl)
+                                            .then(function(timeline_json) {
+                                                return timeline_json.json();
+                                            }).then(function(timeline_data) {
+                                            
+                                                for (var i = 0; i < timeline_data.frames.length; i++) {
+                                                    
+                                                    for (var j = 0; j < timeline_data.frames[i].events.length; j++) {
+                                                        
+                                                        var event = timeline_data.frames[i].events[j];
+                                                        
+                                                        if (event.type.toLowerCase() == "champion_kill" && event.victimId == participantID) {
+                                                            var death_obj = {
+                                                                "type": event.type,
+                                                                "timestamp": event.timestamp,
+                                                                "position": {
+                                                                    "x": event.position.x,
+                                                                    "y": event.position.y
+                                                                },
+                                                                "killerId": event.killerId,
+                                                                "victimId": event.victimId
+                                                            }
+                                                            deathObjList.push(death_obj);
+                                                        }
+                                                    }
+                                                }
+                                                console.log(JSON.stringify(deathObjList));
+                                                res.send(JSON.stringify(deathObjList));
+                                            });
                                     }
                                 });
-                        }
-                    }
+                        //}
+                    //}
                 });
             });
 };
