@@ -122,3 +122,5 @@ exports.getSummonerInfo = function (req, res) {
                 });
             });
 };
+
+function processBatch()
