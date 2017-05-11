@@ -1,6 +1,6 @@
 module.exports = function(app) {
     var api = require('../controllers/apiController');
 
-    app.route('/test/:summonername')
+    app.route('/getinfo/:summonername')
         .get(api.getSummonerInfo)
 };
