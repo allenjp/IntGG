@@ -9,5 +9,5 @@ routes(app);
 var port = process.env.PORT || 8080;
 
 app.listen(port, function() {
-  console.log("WERE UP AND RUNNING (IT DOWN MID)");
+  console.log("WE'RE UP AND RUNNING (IT DOWN MID)");
 });
