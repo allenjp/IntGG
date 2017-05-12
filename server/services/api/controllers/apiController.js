@@ -2,14 +2,18 @@ var fetch = require('node-fetch');
 
 exports.getSummonerInfo = function (req, res) {
     
+    // kick off the function - grab the summoner name from the request
     var summonerName = req.params.summonername;
-    var apiKey = "3a0fbaee-bea5-48fe-bcc6-0581cf9407e7";
-    var accountID = 0;
     
-    console.log('summoner name: ' + summonerName);
+    // TODO: obscure this
+    var apiKey = "3a0fbaee-bea5-48fe-bcc6-0581cf9407e7";
+    var accountID = -1;
+    
+    //console.log('summoner name: ' + summonerName);
     
     var summoner_url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + summonerName + "/?api_key=" + apiKey;
     
+    // get summoner data - namely account ID
     fetch(summoner_url)
         .then(function(summ_json) {
             return summ_json.json();
@@ -23,16 +27,19 @@ exports.getSummonerInfo = function (req, res) {
             accountID = data.accountId;
             return accountID;
         
+        // pass account ID to get list of (recent) matches
         }).then(function(account_id) {
             console.log('account id: ' + account_id);
             var matchListUrl = "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/" + account_id + "/recent?api_key=" + apiKey
-
+            
             fetch(matchListUrl)
                 .then(function(ml_json) {
                     return ml_json.json();
                 }).then(function(matchListData) {
                     console.log(matchListData);
-                
+                    
+                    // split the resulting matches into batches (of 10)
+                    // this is used for rate limiting:
                     var matchCount = matchListData.matches.length;
                 
                     var batchNum = Math.ceil(matchCount / 10);
@@ -53,7 +60,9 @@ exports.getSummonerInfo = function (req, res) {
                             matchIDBatch = [];
                         }
                     }
-                
+                    
+                    // initialize empty list of death objs - 
+                    // this is what we'll eventually send back to the client
                     var deathObjList = [];
                 
                     //for (var i = 0; i < matchIDBatchList.length; i++) {
@@ -61,7 +70,8 @@ exports.getSummonerInfo = function (req, res) {
                             //var matchID = matchIDBatchList[i][j];
                             
                             var matchID = matchIDBatchList[0][0];
-
+                            
+                            // get the participant ID
                             var participantUrl = "https://na1.api.riotgames.com/lol/match/v3/matches/" + matchID + "?api_key=" + apiKey;           
                             
                             fetch(participantUrl)
@@ -71,6 +81,7 @@ exports.getSummonerInfo = function (req, res) {
                                     var participantID = -1;
                                     if (participant_data.participantIdentities[0].player.hasOwnProperty('accountId')) {
                                         
+                                        // loop and find matching participant ID                   
                                         for (var i = 0; i < participant_data.participantIdentities.length; i++) {
                                             var participantFound = false;
                                             if (participant_data.participantIdentities[i].player.currentAccountId == accountID) {
@@ -84,6 +95,7 @@ exports.getSummonerInfo = function (req, res) {
                                         }
                                         console.log('participant id: ' + participantID);
 
+                                        // timeline url: the meat n potatoes of our data
                                         var timeLineUrl = "https://na1.api.riotgames.com/lol/match/v3/timelines/by-match/" + matchID + "?api_key=3a0fbaee-bea5-48fe-bcc6-0581cf9407e7";
                                         
                                         fetch(timeLineUrl)
@@ -97,7 +109,9 @@ exports.getSummonerInfo = function (req, res) {
                                                         
                                                         var event = timeline_data.frames[i].events[j];
                                                         
+                                                        // check each event to see if it's one where our target user died
                                                         if (event.type.toLowerCase() == "champion_kill" && event.victimId == participantID) {
+                                                            // if it is, create a death obj out of that data and add it to the list
                                                             var death_obj = {
                                                                 "type": event.type,
                                                                 "timestamp": event.timestamp,
@@ -112,6 +126,7 @@ exports.getSummonerInfo = function (req, res) {
                                                         }
                                                     }
                                                 }
+                                                // send list of objs back to user
                                                 console.log(JSON.stringify(deathObjList));
                                                 res.send(JSON.stringify(deathObjList));
                                             });
