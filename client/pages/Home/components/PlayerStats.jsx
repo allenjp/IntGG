@@ -13,7 +13,7 @@ import MadLib from './MadLib'
 //     "victimId": event.victimId
 // }
 
-class Search extends React.Component {
+class PlayerStats extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,4 +43,4 @@ class Search extends React.Component {
   }
 }
 
-export default Search;
+export default PlayerStats;
