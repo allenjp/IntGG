@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/server.js",
-    "build": "webpack --watch"
+    "build": "webpack --watch --progress --colors"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/allenjp/IntGG#readme",
   "dependencies": {
-    "auth0-lock": "^10.15.1",
     "express": "^4.15.2",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
