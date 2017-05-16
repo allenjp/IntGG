@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import MadLib from './MadLib'
+import Heatmap from './Heatmap'
 
 // var death_obj = {
 //     "type": event.type,
@@ -17,17 +18,21 @@ class PlayerStats extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: 'testing testing'
+      type: 'type',
+      timestamp: 'timestamp',
+      x: 0,
+      y: 0,
+      killerId: 0,
+      victimId: 0
     };
-  }
+  };
 
   handleSubmit(input) {
-    fetch('/getdeathinfo/' + input).then(function(data) {
+    fetch('/getinfo/' + input).then(function(data) {
       console.log(data);
     });
-  }
+  };
   render() {
-    console.log(this.state.test)
     return (
       <div>
         <div>
@@ -35,12 +40,12 @@ class PlayerStats extends React.Component {
           <Button type="submit" className="btn btn-success btn-xs" onClick={() => this.handleSubmit(document.getElementById("name-input").value)}>Search</Button>
         </div>
         <div>
-          <h2>render player stats here</h2>
-          <MadLib sending={this.state.test} />
+          <Heatmap />
+          <MadLib data={[this.state.type, this.state.timestamp]} />
         </div>
       </div>
     )
-  }
-}
+  };
+};
 
 export default PlayerStats;
