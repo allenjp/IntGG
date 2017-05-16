@@ -3,14 +3,16 @@ import React from 'react'
 class MadLib extends React.Component {
   constructor(props) {
     super(props);
-  }
+  };
 
   render() {
-    console.log(this.props.test)
     return(
-      <p>MadLib component properties: {this.props.sending}</p>
+      <div>
+        <p>MadLib component</p>
+        <p>MadLib props: {this.props.data}</p>
+      </div>
     )
-  }
-}
+  };
+};
 
 export default MadLib;

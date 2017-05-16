@@ -17,7 +17,7 @@ class Home extends React.Component {
         <PlayerStats />
       </div>
     )
-  }
-}
+  };
+};
 
 export default Home;

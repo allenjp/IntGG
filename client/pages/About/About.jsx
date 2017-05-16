@@ -10,7 +10,7 @@ class About extends React.Component {
         <h2>sample about page</h2>
       </div>
     ) 
-  }
-}
+  };
+};
 
 export default About;
