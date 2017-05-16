@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Grid, Row, Col } from 'react-bootstrap'
 import MadLib from './MadLib'
 import Heatmap from './Heatmap'
 
