@@ -9,7 +9,7 @@ class About extends React.Component {
         <Link to="/">Home</Link>
         <h2>sample about page</h2>
       </div>
-    )
+    ) 
   }
 }
 

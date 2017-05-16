@@ -9,9 +9,9 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <h1>Home</h1>
+        <h1>IntGG</h1>
         <div>
-          <Link to="/about"> About </Link>
+          <Link to="/about">About</Link>
         </div>
         <Banner />
         <PlayerStats />
